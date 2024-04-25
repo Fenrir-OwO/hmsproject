@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIM3 Hotels</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .jumbotron {
+      padding: 20em 15em;
+      background-image: url('{% static "hotel_management/hotel.jpg" %}');
+      background-size: cover;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 style="font-size:5vw">Welcome to AIM3 Hotels</h1>
+      <h1>Experience luxury redefined</h1>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2>Explore Our Offerings</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Rooms</h3>
+        <p>Indulge in our spacious and elegantly designed rooms, each offering breathtaking views and luxurious amenities.</p>
+        <a href="{% url 'room'%}" class="btn btn-primary">View Rooms</a>
+      </div>
+      <div class="col-md-4">
+        <h3>Food</h3>
+        <p>Savor the finest culinary creations crafted by our award-winning chefs, showcasing flavors from around the world.</p>
+        <a href="{% url 'food' %}" class="btn btn-primary">Explore Dining</a>
+      </div>
+      <div class="col-md-4">
+        <h3>Services</h3>
+        <p>Experience personalized service tailored to your every need, ensuring a memorable and enjoyable stay.</p>
+        <a href="{% url 'service' %}" class="btn btn-primary">Discover Services</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <h2>About AIM3 Hotels</h2>
+    <p>AIM3 Hotels is a leading luxury hotel chain renowned for its exceptional hospitality and commitment to excellence. With a portfolio of exclusive properties located in prime destinations worldwide, we strive to provide unparalleled experiences to our guests, whether they are traveling for business or leisure.</p>
+    <p>Our mission is to exceed expectations by delivering unparalleled service, luxurious accommodations, and memorable experiences that leave a lasting impression.</p>
+  </div>
+  <div class="container">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+{% endblock %}
+

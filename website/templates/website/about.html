@@ -1,0 +1,41 @@
+<!-- templates/about.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About AIM3 Hotels{% endblock %}
+{% block content %}
+<br>
+<section class="section-about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="section-title">Welcome to AIM3 Hotels</h2>
+                <p class="section-subtitle">Experience Luxury, Comfort, and Hospitality</p>
+                <p>At AIM3 Hotels, we redefine hospitality with our commitment to excellence and attention to detail. Whether you're traveling for business or leisure, our hotels offer unparalleled comfort and luxury, ensuring a memorable stay.</p>
+                <p>With a focus on personalized service, state-of-the-art facilities, and world-class amenities, we strive to exceed the expectations of every guest. From elegantly appointed rooms to exquisite dining options, every aspect of your experience is designed to indulge your senses.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'hotel_management/hotel.jpg' %}" class="img-fluid rounded" alt="About AIM3 Hotels">
+            </div>
+        </div>
+    </div>
+</section>
+<br>
+<section class="section-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="section-title">Contact Us</h2>
+                <p class="section-subtitle">We're Here to Assist You</p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope"></i> Email: info@aim3hotels.com</li>
+                    <li><i class="fas fa-phone"></i> Phone: +8801769696969</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Address: South Badda, Dhaka,</li>
+                </ul>
+            </div>
+            <div class="col-lg-6">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.2389119641366!2d90.4226867!3d23.774505299999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755c72acf47ebbd%3A0xc38bb508f69190f2!2sBanyan%20House%20by%20Nestor!5e0!3m2!1sen!2sbd!4v1714053351480!5m2!1sen!2sbd" width="100%" height="auto" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
