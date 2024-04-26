@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Service Booking{% endblock %}
+{% block title %}Order Food{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -7,16 +7,16 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h2 class="card-title">Service Booking</h2>
+                    <h2 class="card-title">Order Food</h2>
                 </div>
                 <div class="card-body">
-                    <form id="service-booking-form" method="post">
+                    <form id="food-order-form" method="post">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="service" class="form-label">Service:</label>
-                            <select id="service" name="service" class="form-select">
-                                {% for service in form.service.field.queryset %}
-                                    <option value="{{ service.pk }}" data-price="{{ service.price }}">{{ service.service_type }}</option>
+                            <label for="food" class="form-label">Service:</label>
+                            <select id="food" name="food" class="form-select">
+                                {% for food in form.food.field.queryset %}
+                                    <option value="{{ food.pk }}" data-price="{{ food.price }}">{{ food.food_type }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -27,7 +27,7 @@
                         <div class="mb-3">
                             <p class="fw-bold">Total Price: $<span id="total-price">0.00</span></p>
                         </div>
-                        <button type="submit" class="btn btn-primary">Book Service</button>
+                        <button type="submit" class="btn btn-primary">Order</button>
                     </form>
                 </div>
             </div>
@@ -36,7 +36,7 @@
 </div>
 
 <script>
-    const serviceSelect = document.getElementById('service');
+    const serviceSelect = document.getElementById('food');
     const quantityInput = document.getElementById('quantity');
     const totalPriceSpan = document.getElementById('total-price');
 

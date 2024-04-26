@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignUpForm, LoginForm, RoomBookingForm, ServiceOrderForm
-from .models import RoomBooking, FoodOrder, ServiceOrder, Employee
+from .forms import SignUpForm, LoginForm, RoomBookingForm, ServiceBookingForm, FoodOrderForm
+from .models import RoomBooking, FoodOrder, ServiceOrder, Employee, Billing, Payment
 
 # Create your views here.
 def home_view(request):
@@ -69,24 +70,35 @@ def room_booking(request):
 
 @login_required
 def dashboard(request):
-    room_bookings = RoomBooking.objects.filter(booked_by=request.user)
-    food_orders = FoodOrder.objects.filter(person=request.user)
-    service_orders = ServiceOrder.objects.filter(person=request.user)
     is_employee = False
-    context = {
-        'room_bookings': room_bookings,
-        'food_orders': food_orders,
-        'service_orders': service_orders,
-        'is_employee': is_employee
-    }
     if request.user.is_authenticated:
         try:
             employee = Employee.objects.get(person=request.user)
             is_employee = True
         except Employee.DoesNotExist:
             pass
-
-    return render(request, 'website/dashboard.html', context=context)
+    if is_employee:
+        room_bookings = RoomBooking.objects.all()
+        food_orders = FoodOrder.objects.all()
+        service_orders = ServiceOrder.objects.all()
+        context = {
+            'room_bookings': room_bookings,
+            'food_orders': food_orders,
+            'service_orders': service_orders,
+        }
+        return render(request, 'website/dashboard_employee.html', context)
+    else:
+        room_bookings = RoomBooking.objects.filter(booked_by=request.user)
+        food_orders = FoodOrder.objects.filter(ordered_by=request.user)
+        service_orders = ServiceOrder.objects.filter(ordered_by=request.user)
+        is_employee = False
+        context = {
+            'room_bookings': room_bookings,
+            'food_orders': food_orders,
+            'service_orders': service_orders,
+        }
+        return render(request, 'website/dashboard.html', context=context)
+@login_required
 def checkout(request, booking_id):
     if request.user.is_authenticated:
         booking = get_object_or_404(RoomBooking, pk=booking_id)
@@ -99,12 +111,42 @@ def checkout(request, booking_id):
 @login_required
 def service_booking(request):
     if request.method == 'POST':
-        form = ServiceOrderForm(request.POST)
+        form = ServiceBookingForm(request.POST)
         if form.is_valid():
             service_order = form.save(commit=False)
-            service_order.ordered_by = request.user  # Assign the currently logged-in user
+            service_order.ordered_by = request.user
             service_order.save()
-            return redirect('index')  # Redirect to a success page after successful submission
-    else:
-        form = ServiceOrderForm()
+            return redirect('dashboard')
+    form = ServiceBookingForm()
     return render(request, 'website/service_booking.html', {'form': form})
+
+@login_required
+def payment(request):
+    unpaid_food_orders = FoodOrder.objects.filter(payment_status='unpaid')
+    unpaid_service_orders = ServiceOrder.objects.filter(payment_status='unpaid')
+
+    total_amount = sum(order.total_price for order in unpaid_food_orders) + sum(order.total_price for order in unpaid_service_orders)
+
+    if request.method == 'POST':
+        unpaid_food_orders.update(payment_status='paid')
+        unpaid_service_orders.update(payment_status='paid')
+        return redirect('dashboard')
+
+    context = {
+        'unpaid_food_orders': unpaid_food_orders,
+        'unpaid_service_orders': unpaid_service_orders,
+        'total_amount': total_amount,
+    }
+    return render(request, 'website/payment.html', context)
+
+@login_required
+def food_order_view(request):
+    if request.method == 'POST':
+        form = FoodOrderForm(request.POST)
+        if form.is_valid():
+            food_order = form.save(commit=False)
+            food_order.ordered_by = request.user
+            food_order.save()
+            return redirect('dashboard')
+    form = FoodOrderForm()
+    return render(request, 'website/food_order.html', {'form': form})

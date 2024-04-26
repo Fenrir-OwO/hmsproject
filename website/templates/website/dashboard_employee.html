@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock title %}
+{% block title %}Employee Dashboard{% endblock title %}
 {% block content %}
 
 <head>
@@ -16,16 +16,10 @@
         .checkout-btn {
             margin-left: 10px;
         }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
     </style>
 </head>
 <body class="container mt-5">
-    <h1 class="mb-4">Welcome, {{ request.user.first_name }}.</h1>
+    <h1 class="mb-4">Employee Dashboard</h1>
     
     <div class="card mb-4">
         <div class="card-header">
@@ -39,6 +33,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Room: {{ booking.room.room_number }}</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">{{ booking.room.get_room_type_display }}</h6>
+                                <p class="card-text">Booked by: {{ booking.booked_by }}</p>
                                 <p class="card-text">Booking Date: {{ booking.booking_date }}</p>
                                 <p class="card-text">Total Price: ${{ booking.total_price }}</p>
                                 <a href="{% url 'checkout' booking.pk %}" class="btn btn-danger btn-sm checkout-btn">Checkout</a>
@@ -63,9 +58,9 @@
                         <div class="card booking-item">
                             <div class="card-body">
                                 <h5 class="card-title">Food: {{ order.food }}</h5>
+                                <p class="card-text">Ordered by: {{ order.ordered_by }}</p>
                                 <p class="card-text">Quantity: {{ order.quantity }}</p>
                                 <p class="card-text">Total Price: ${{ order.total_price }}</p>
-                                <p class="card-subtitle mb-2 text-muted">Status: {{ order.payment_status.upper }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -87,8 +82,8 @@
                         <div class="card booking-item">
                             <div class="card-body">
                                 <h5 class="card-title">Service: {{ order.service }}</h5>
+                                <p class="card-text">Ordered by: {{ order.ordered_by }}</p>
                                 <p class="card-text">Total Price: ${{ order.total_price }}</p>
-                                <p class="card-subtitle mb-2 text-muted">Status: {{ order.payment_status.upper }}</p>
                             </div>
                         </div>
                     {% endfor %}
@@ -98,11 +93,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="card mb-4">
-        <div class="card-body">
-            <a href="{% url 'payment' %}" class="btn btn-primary">Proceed to Payment</a>
-        </div>
-    </div>
+
 </body>
 </html>
 {% endblock %}

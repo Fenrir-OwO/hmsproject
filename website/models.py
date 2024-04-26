@@ -114,18 +114,23 @@ class Food(models.Model):
         return f"{self.food_item_number} - {self.food_type}"
 
 class FoodOrder(models.Model):
+    PAID = 'paid'
+    UNPAID = 'unpaid'
+    PAYMENT_STATUS_CHOICES = [
+        (PAID, 'Paid'),
+        (UNPAID, 'Unpaid'),
+    ]
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES, default=UNPAID)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     ordered_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    order_date = models.DateField()
-
-    @property
-    def total_price(self):
-        return self.food.price * self.quantity
-
+    order_date = models.DateField(default=timezone.now)
+    total_price = models.IntegerField()
     def __str__(self):
         return f"{self.food.food_type} - {self.ordered_by.username}"
-    
+    def save(self, *args, **kwargs):
+        self.total_price = self.food.price * self.quantity
+        super(FoodOrder, self).save(*args, **kwargs)   
 class Service(models.Model):
     KIDS_PLAYING_ZONE = 'kids_playing_zone'
     GYM = 'gym'
@@ -142,8 +147,7 @@ class Service(models.Model):
         (BICYCLE_RIDES, 'Bicycle Rides'),
         (TOURIST_BUS, 'Tourist Bus'),
     ]
-
-    service_id = models.CharField(max_length=50, unique=True)
+    service_id = models.CharField(max_length=10, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     service_type = models.CharField(max_length=20, choices=SERVICE_TYPES)
@@ -151,16 +155,42 @@ class Service(models.Model):
     def __str__(self):
         return f"{self.service_id} - {self.service_type}"
 class ServiceOrder(models.Model):
+    PAID = 'paid'
+    UNPAID = 'unpaid'
+    PAYMENT_STATUS_CHOICES = [
+        (PAID, 'Paid'),
+        (UNPAID, 'Unpaid'),
+    ]
+    payment_status = models.CharField(max_length=10, choices=PAYMENT_STATUS_CHOICES, default=UNPAID)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     ordered_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    order_date = models.DateField(default=timezone.now)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
-
+    order_date = models.DateField(auto_now_add=True)
+    total_price = models.IntegerField(null=True)
     def save(self, *args, **kwargs):
         self.total_price = self.service.price * self.quantity
         super(ServiceOrder, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.service.service_type} - {self.ordered_by.username}"
-    
+
+class Payment(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    payment_method = models.CharField(max_length=50)
+    food_order = models.ForeignKey(FoodOrder, on_delete=models.SET_NULL, null=True, blank=True)
+    service_order = models.ForeignKey(ServiceOrder, on_delete=models.SET_NULL, null=True, blank=True)
+class Billing(models.Model):
+    PAID = 'paid'
+    UNPAID = 'unpaid'
+
+    BILL_STATUS_CHOICES = [
+        (PAID, 'Paid'),
+        (UNPAID, 'Unpaid'),
+    ]
+
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payment_date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=BILL_STATUS_CHOICES, default=UNPAID)
