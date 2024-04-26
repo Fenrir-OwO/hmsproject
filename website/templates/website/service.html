@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <head>
 <meta charset="UTF-8">
@@ -18,58 +19,70 @@
     <h1 class="mb-4">Our Services</h1>
     <div class="row">
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Kids Playing Zone">
+                <img src="{% static 'hotel_management/kpz.jpg'%}" class="card-img-top" alt="Kids Playing Zone">
                 <div class="card-body">
                     <h5 class="card-title">Kids Playing Zone</h5>
                     <p class="card-text">A dedicated area for kids to play and have fun.</p>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Gym">
+                <img src="{% static 'hotel_management/gym.jpg'%}" class="card-img-top" alt="Gym">
                 <div class="card-body">
                     <h5 class="card-title">Gym</h5>
                     <p class="card-text">State-of-the-art gym equipment for your fitness needs.</p>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Swimming Pool">
+                <img src="{% static 'hotel_management/pool.jpg'%}" class="card-img-top" alt="Swimming Pool">
                 <div class="card-body">
                     <h5 class="card-title">Swimming Pool</h5>
                     <p class="card-text">Relax and enjoy a swim in our sparkling swimming pool.</p>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Gaming Zone">
+                <img src="{% static 'hotel_management/game.jpg'%}" class="card-img-top" alt="Gaming Zone">
                 <div class="card-body">
                     <h5 class="card-title">Gaming Zone</h5>
                     <p class="card-text">Exciting games and activities for gaming enthusiasts.</p>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Bicycle Rides">
+                <img src="{% static 'hotel_management/bike.jpg'%}" class="card-img-top" alt="Bicycle Rides">
                 <div class="card-body">
                     <h5 class="card-title">Bicycle Rides</h5>
                     <p class="card-text">Explore the surroundings with our bicycle rental service.</p>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-md-4 mb-4">
+            <a href="">
             <div class="card">
-                <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Tourist Bus">
+                <img src="{% static 'hotel_management/bus.jpg'%}" class="card-img-top" alt="Tourist Bus">
                 <div class="card-body">
                     <h5 class="card-title">Tourist Bus</h5>
                     <p class="card-text">Guided tours to popular tourist attractions in the area.</p>
                 </div>
             </div>
+            </a>
         </div>
     </div>
 </div>

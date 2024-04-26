@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<<head>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rooms</title>
@@ -37,6 +37,7 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
+            <a href="{% url 'room_booking' %}">
                 <div class="card">
                     <img src="{% static 'hotel_management/ssr.jpg' %}" class="card-img-top" alt="Room 1">
                     <div class="card-body">
@@ -45,8 +46,10 @@
                     </div>
                     <span class="card-number">1</span>
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="{% url 'room_booking' %}">
                 <div class="card">
                     <img src="{% static 'hotel_management/psr.jpg' %}" class="card-img-top" alt="Room 2">
                     <div class="card-body">
@@ -55,8 +58,10 @@
                     </div>
                     <span class="card-number">2</span>
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="{% url 'room_booking' %}">
                 <div class="card">
                     <img src="{% static 'hotel_management/sdr.jpg' %}" class="card-img-top" alt="Room 3">
                     <div class="card-body">
@@ -65,8 +70,10 @@
                     </div>
                     <span class="card-number">3</span>
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="{% url 'room_booking' %}">
                 <div class="card">
                     <img src="{% static 'hotel_management/pdr.jpg' %}" class="card-img-top" alt="Room 4">
                     <div class="card-body">
@@ -75,8 +82,10 @@
                     </div>
                     <span class="card-number">4</span>
                 </div>
+            </a>
             </div>
             <div class="carousel-item">
+            <a href="{% url 'room_booking' %}">
                 <div class="card">
                     <img src="{% static 'hotel_management/lfr.jpg' %}" class="card-img-top" alt="Room 5">
                     <div class="card-body">
@@ -85,6 +94,7 @@
                     </div>
                     <span class="card-number">5</span>
                 </div>
+            </a>
             </div>
         </div>
         <a class="carousel-control-prev" href="#roomCarousel" role="button" data-slide="prev">

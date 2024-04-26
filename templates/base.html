@@ -30,20 +30,20 @@
           <a class="nav-link" href="{% url 'about' %}">About</a>
         </li>
       </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Log Out</a>
-        </li>
+      <ul class="navbar-nav ms-auto">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+        {% endif %}       
       </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Log In</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sign Up</a>
-        </li>
-      </ul>
-      
     </div>
   </nav>
 
@@ -52,13 +52,17 @@
 {% endblock %}
 <footer class="footer mt-auto py-3">
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-      <li class="nav-item"><a href="/" class="nav-link px-2 text-body-secondary">Home</a></li>
-      <li class="nav-item"><a href="/room" class="nav-link px-2 text-body-secondary">Rooms</a></li>
-      <li class="nav-item"><a href="/food" class="nav-link px-2 text-body-secondary">Food</a></li>
-      <li class="nav-item"><a href="/service" class="nav-link px-2 text-body-secondary">Services</a></li>
-      <li class="nav-item"><a href="/about" class="nav-link px-2 text-body-secondary">About</a></li>
+      <li class="nav-item"><a href="{% url 'index' %}" class="nav-link px-2 text-body-secondary">Home</a></li>
+      <li class="nav-item"><a href="{% url 'room' %}" class="nav-link px-2 text-body-secondary">Rooms</a></li>
+      <li class="nav-item"><a href="{% url 'food' %}" class="nav-link px-2 text-body-secondary">Food</a></li>
+      <li class="nav-item"><a href="{% url 'service' %}" class="nav-link px-2 text-body-secondary">Services</a></li>
+      <li class="nav-item"><a href="{% url 'about' %}" class="nav-link px-2 text-body-secondary">About</a></li>
     </ul>
     <p class="text-center text-body-secondary">&copy; 2024 AIM3 Hotels</p>
   </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
