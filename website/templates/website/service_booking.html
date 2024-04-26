@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Order Service{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5 mb-4">Order Service</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="service-order-form" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.service.label_tag }}
+                    {{ form.service }}
+                </div>
+                <div class="mb-3">
+                    {{ form.quantity.label_tag }}
+                    {{ form.quantity }}
+                </div>
+                <div class="mb-3">
+                    {{ form.order_date.label_tag }}
+                    {{ form.order_date }}
+                </div>
+                <div class="mb-3">
+                    <label for="total-cost">Total Cost:</label>
+                    <span id="total-cost"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById('service-order-form');
+    const totalCostSpan = document.getElementById('total-cost');
+    
+    form.addEventListener('input', function() {
+        const serviceId = form.elements.service.value;
+        const quantity = form.elements.quantity.value;
+        
+        // Fetch the service price via AJAX
+        fetch(`/get_service_price/?service_id=${serviceId}`)
+            .then(response => response.json())
+            .then(data => {
+                const totalPrice = data.price * quantity;
+                totalCostSpan.textContent = `$${totalPrice.toFixed(2)}`;
+            })
+            .catch(error => {
+                console.error('Error fetching service price:', error);
+            });
+    });
+});
+</script>
+{% endblock %}

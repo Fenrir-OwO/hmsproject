@@ -52,7 +52,8 @@ class PhoneNumber(models.Model):
 class Employee(models.Model):
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
     employee_id = models.CharField(max_length=20, unique=True)
-    department = models.CharField(max_length=100)
+    salary = models.IntegerField(null=True)
+    role = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.person.first_name} {self.person.last_name} - {self.employee_id}'
@@ -153,11 +154,12 @@ class ServiceOrder(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     ordered_by = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    order_date = models.DateField()
+    order_date = models.DateField(default=timezone.now)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
 
-    @property
-    def total_cost(self):
-        return self.service.price * self.quantity
+    def save(self, *args, **kwargs):
+        self.total_price = self.service.price * self.quantity
+        super(ServiceOrder, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.service.service_type} - {self.ordered_by.username}"

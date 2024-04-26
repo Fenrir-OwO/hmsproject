@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
-from .forms import SignUpForm, LoginForm, RoomBookingForm
+from .forms import SignUpForm, LoginForm, RoomBookingForm, ServiceOrderForm
+from .models import RoomBooking, FoodOrder, ServiceOrder, Employee
 
 # Create your views here.
 def home_view(request):
@@ -52,7 +53,7 @@ def room_booking(request):
         form = RoomBookingForm(request.POST)
         if form.is_valid():
             room_booking = form.save(commit=False)
-            room_booking.booked_by = request.user  # Assuming user is logged in
+            room_booking.booked_by = request.user
             room_booking.total_price = room_booking.room.price * room_booking.num_nights
             room_booking.save()
 
@@ -65,3 +66,45 @@ def room_booking(request):
     else:
         form = RoomBookingForm()
     return render(request, 'website/room_booking.html', {'form': form})
+
+@login_required
+def dashboard(request):
+    room_bookings = RoomBooking.objects.filter(booked_by=request.user)
+    food_orders = FoodOrder.objects.filter(person=request.user)
+    service_orders = ServiceOrder.objects.filter(person=request.user)
+    is_employee = False
+    context = {
+        'room_bookings': room_bookings,
+        'food_orders': food_orders,
+        'service_orders': service_orders,
+        'is_employee': is_employee
+    }
+    if request.user.is_authenticated:
+        try:
+            employee = Employee.objects.get(person=request.user)
+            is_employee = True
+        except Employee.DoesNotExist:
+            pass
+
+    return render(request, 'website/dashboard.html', context=context)
+def checkout(request, booking_id):
+    if request.user.is_authenticated:
+        booking = get_object_or_404(RoomBooking, pk=booking_id)
+        if booking.booked_by == request.user:
+            booking.room.is_available = True
+            booking.room.save()
+            booking.delete()
+    return redirect('dashboard')
+
+@login_required
+def service_booking(request):
+    if request.method == 'POST':
+        form = ServiceOrderForm(request.POST)
+        if form.is_valid():
+            service_order = form.save(commit=False)
+            service_order.ordered_by = request.user  # Assign the currently logged-in user
+            service_order.save()
+            return redirect('index')  # Redirect to a success page after successful submission
+    else:
+        form = ServiceOrderForm()
+    return render(request, 'website/service_booking.html', {'form': form})
