@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Person, Room, RoomBooking
+from .models import Person, Room, RoomBooking, Food, FoodOrder, Service, ServiceOrder
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.')
@@ -26,3 +26,21 @@ class RoomBookingForm(forms.ModelForm):
     class Meta:
         model = RoomBooking
         fields = ['room', 'num_nights', 'booking_date']
+
+class ServiceBookingForm(forms.ModelForm):
+    class Meta:
+        model = ServiceOrder
+        fields = ['service', 'quantity']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['service'].queryset = Service.objects.all()
+
+class FoodOrderForm(forms.ModelForm):
+    class Meta:
+        model = FoodOrder
+        fields = ['food', 'quantity']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['food'].queryset = Food.objects.all()
