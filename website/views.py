@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from .forms import SignUpForm, LoginForm, RoomBookingForm, ServiceBookingForm, FoodOrderForm
-from .models import RoomBooking, FoodOrder, ServiceOrder, Employee, Billing, Payment
+from .models import RoomBooking, FoodOrder, ServiceOrder, Employee, Billing, Payment, InventoryItem
 
 # Create your views here.
 def home_view(request):
@@ -58,7 +58,6 @@ def room_booking(request):
             room_booking.total_price = room_booking.room.price * room_booking.num_nights
             room_booking.save()
 
-            # Mark the booked room as unavailable
             booked_room = room_booking.room
             booked_room.is_available = False
             booked_room.save()
@@ -81,17 +80,19 @@ def dashboard(request):
         room_bookings = RoomBooking.objects.all()
         food_orders = FoodOrder.objects.all()
         service_orders = ServiceOrder.objects.all()
+        inventory_items = InventoryItem.objects.all()
         context = {
             'room_bookings': room_bookings,
             'food_orders': food_orders,
             'service_orders': service_orders,
+            'inventory_items': inventory_items
         }
         return render(request, 'website/dashboard_employee.html', context)
     else:
         room_bookings = RoomBooking.objects.filter(booked_by=request.user)
         food_orders = FoodOrder.objects.filter(ordered_by=request.user)
         service_orders = ServiceOrder.objects.filter(ordered_by=request.user)
-        is_employee = False
+
         context = {
             'room_bookings': room_bookings,
             'food_orders': food_orders,

@@ -194,3 +194,10 @@ class Billing(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=BILL_STATUS_CHOICES, default=UNPAID)
+
+class InventoryItem(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.name} (Quantity: {self.quantity})"
