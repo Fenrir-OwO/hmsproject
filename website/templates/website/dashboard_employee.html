@@ -20,7 +20,7 @@
 </head>
 <body class="container mt-5">
     <h1 class="mb-4">Employee Dashboard</h1>
-    
+    <h1 class="mb-4">Welcome, {{ request.user.first_name }}.</h1>
     <div class="card mb-4">
         <div class="card-header">
             <h2 class="card-title">Room Bookings</h2>
@@ -92,6 +92,25 @@
                 <p>No service orders.</p>
             {% endif %}
         </div>
+    </div>
+    <div class="container mt-5">
+        <h1>Inventory Items</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Item</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in inventory_items %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 
 </body>
